@@ -53,7 +53,24 @@ void imprime(double **M, int dim)
         }
 }
 
-void main (int argc , char **argv )
+//Função substituiçao reversa para encontrar a solução geral
+void subsreversa( double **M, double *raizes, int dim)
+{
+	int i, j;
+	double soma;
+	
+	for(i=dim-1; i>=0; i--)
+	{
+		soma=0;
+		for(j=i+1; j<dim; j++)
+		{
+			soma=soma+ (M[i][j]*raizes[j]);
+		}
+		raizes[i]= (M[i][dim]-soma)/M[i][i];
+	}
+}
+
+int main (int argc , char **argv )
 {
   double **M;
   double *raizes;
@@ -62,5 +79,15 @@ void main (int argc , char **argv )
   printf("\nMatriz lida no arquivo Matriz.dat:\n");
   M=ler(argv[1] ,&dim);
   imprime(M,dim);
+  //Solução atraves da substituição reversa:
+  printf("\nSolução:\n");
+  raizes = malloc(dim *sizeof(double));
+  subsreversa(M,raizes,dim);
+  for (i =0; i<dim ; i++) 
+  {
+  	printf ("x%1d = %5.2lf\n",i , raizes[i]) ;
+  }
+  return 0;
+  fclose(fp);
 }
  
